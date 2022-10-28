@@ -22,7 +22,7 @@ public class BlockInit {
 
     public static final RegistryObject<Block> WAND_WORKBENCH = registerBlock("wand_workbench",
             () -> new WandWorkbenchBlock(BlockBehaviour.Properties.of(Material.WOOD)
-                    .noOcclusion().strength(3f).sound(SoundType.WOOD)), CreativeModeTab.TAB_MISC);
+                    .noOcclusion().strength(0.2f).sound(SoundType.WOOD)), CreativeModeTab.TAB_MISC);
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
