@@ -21,16 +21,17 @@ public class BlockInit {
             DeferredRegister.create(ForgeRegistries.BLOCKS, Arcane_conjouring.MODID);
 
     public static final RegistryObject<Block> WAND_WORKBENCH = registerBlock("wand_workbench",
-            () -> new WandWorkbenchBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3f).sound(SoundType.WOOD)) );
+            () -> new WandWorkbenchBlock(BlockBehaviour.Properties.of(Material.WOOD)
+                    .noOcclusion().strength(3f).sound(SoundType.WOOD)), CreativeModeTab.TAB_MISC);
 
-    public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
+    public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
-        registerBlockItem(name, registryObject);
+        registerBlockItem(name, registryObject, tab);
         return registryObject;
     }
 
-    public static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
-        ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    public static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block, CreativeModeTab tab) {
+        ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
     }
 
 }

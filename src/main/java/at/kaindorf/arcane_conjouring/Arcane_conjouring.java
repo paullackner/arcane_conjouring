@@ -1,5 +1,6 @@
 package at.kaindorf.arcane_conjouring;
 
+import at.kaindorf.arcane_conjouring.init.BlockEntityInit;
 import at.kaindorf.arcane_conjouring.init.BlockInit;
 import at.kaindorf.arcane_conjouring.init.ItemInit;
 import com.mojang.logging.LogUtils;
@@ -48,6 +49,8 @@ public class Arcane_conjouring {
 
         BlockInit.BLOCKS.register(modEventBus);
         ItemInit.ITEMS.register(modEventBus);
+
+        BlockEntityInit.BLOCK_ENTITIES.register(modEventBus);
 
         // Register the Deferred Register to the mod event bus so blocks get registered
         BLOCKS.register(modEventBus);
