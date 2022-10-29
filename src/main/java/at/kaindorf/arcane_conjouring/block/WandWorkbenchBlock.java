@@ -3,8 +3,12 @@ package at.kaindorf.arcane_conjouring.block;
 import at.kaindorf.arcane_conjouring.block.entity.WandWorkbenchEntity;
 import at.kaindorf.arcane_conjouring.block.state.WandWorkbenchPart;
 import at.kaindorf.arcane_conjouring.block.state.properties.ModBlockStateProperties;
+import at.kaindorf.arcane_conjouring.init.BlockEntityInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +18,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BedPart;
@@ -21,8 +27,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class WandWorkbenchBlock extends BaseEntityBlock {
@@ -134,31 +142,40 @@ public class WandWorkbenchBlock extends BaseEntityBlock {
         super.playerWillDestroy(level, blockPos, blockState, player);
     }
 
-//    @Override
-//    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-//        if (pState.getBlock() != pNewState.getBlock()) {
-//            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-//            if (blockEntity instanceof  WandWorkbenchEntity) {
-//                ((WandWorkbenchEntity) blockEntity).drops();
-//            }
-//        }
-//        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-//    }
-//
-//    @Override
-//    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-//
-//        if (!pLevel.isClientSide()) {
-//            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-//            if (blockEntity instanceof WandWorkbenchEntity) {
-//                NetworkHooks.openScreen(((ServerPlayer) pPlayer), (WandWorkbenchEntity) blockEntity, pPos);
-//            } else {
-//                throw new IllegalStateException("Container provider missing");
-//            }
-//        }
-//
-//        return  InteractionResult.sidedSuccess(pLevel.isClientSide());
-//    }
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        if (pState.getBlock() != pNewState.getBlock()) {
+            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof  WandWorkbenchEntity) {
+                ((WandWorkbenchEntity) blockEntity).drops();
+            }
+        }
+        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+    }
+
+    @Override
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+
+        if (level.isClientSide()) {
+            return  InteractionResult.CONSUME;
+        } else {
+            if (blockState.getValue(PART) != WandWorkbenchPart.HEAD) {
+                blockPos = blockPos.relative(blockState.getValue(FACING).getCounterClockWise());
+                blockState = level.getBlockState(blockPos);
+                if (!blockState.is(this)) {
+                    return InteractionResult.CONSUME;
+                }
+            }
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof WandWorkbenchEntity) {
+                NetworkHooks.openScreen(((ServerPlayer) player), (WandWorkbenchEntity) blockEntity, blockPos);
+            } else {
+                throw new IllegalStateException("Container provider missing");
+            }
+
+            return InteractionResult.SUCCESS;
+        }
+    }
 
     @Nullable
     @Override
@@ -166,9 +183,9 @@ public class WandWorkbenchBlock extends BaseEntityBlock {
         return new WandWorkbenchEntity(pos, state);
     }
 
-//    @Nullable
-//    @Override
-//    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-//        return createTickerHelper(type, BlockEntityInit.WAND_WORKBENCH.get(), WandWorkbenchEntity::tick);
-//    }
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, BlockEntityInit.WAND_WORKBENCH.get(), WandWorkbenchEntity::tick);
+    }
 }

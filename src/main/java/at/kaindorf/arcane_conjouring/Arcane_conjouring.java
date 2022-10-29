@@ -3,8 +3,11 @@ package at.kaindorf.arcane_conjouring;
 import at.kaindorf.arcane_conjouring.init.BlockEntityInit;
 import at.kaindorf.arcane_conjouring.init.BlockInit;
 import at.kaindorf.arcane_conjouring.init.ItemInit;
+import at.kaindorf.arcane_conjouring.init.MenuTypeInit;
+import at.kaindorf.arcane_conjouring.screen.WandWorkbenchScreen;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -44,20 +47,14 @@ public class Arcane_conjouring {
     public Arcane_conjouring() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        // Register the commonSetup method for modloading
+        BlockInit.register(modEventBus);
+        ItemInit.register(modEventBus);
+
+        BlockEntityInit.register(modEventBus);
+        MenuTypeInit.register(modEventBus);
+
         modEventBus.addListener(this::commonSetup);
 
-        BlockInit.BLOCKS.register(modEventBus);
-        ItemInit.ITEMS.register(modEventBus);
-
-        BlockEntityInit.BLOCK_ENTITIES.register(modEventBus);
-
-        // Register the Deferred Register to the mod event bus so blocks get registered
-        BLOCKS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so items get registered
-        ITEMS.register(modEventBus);
-
-        // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -84,6 +81,8 @@ public class Arcane_conjouring {
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+
+            MenuScreens.register(MenuTypeInit.WAND_WORKBENCH_MENU.get(), WandWorkbenchScreen::new);
         }
     }
 }

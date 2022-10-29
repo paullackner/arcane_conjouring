@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.CraftingTableBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -34,4 +35,7 @@ public class BlockInit {
         ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
     }
 
+    public static void register(IEventBus eventBus) {
+        BLOCKS.register(eventBus);
+    }
 }
