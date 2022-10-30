@@ -183,9 +183,4 @@ public class WandWorkbenchBlock extends BaseEntityBlock {
         return new WandWorkbenchEntity(pos, state);
     }
 
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BlockEntityInit.WAND_WORKBENCH.get(), WandWorkbenchEntity::tick);
-    }
 }

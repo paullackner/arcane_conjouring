@@ -1,0 +1,52 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "arcane_conjouring:item/wand",
+		"particle": "arcane_conjouring:item/wand"
+	},
+	"elements": [
+		{
+			"from": [7, 0, 7],
+			"to": [9, 16, 9],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 16], "texture": "#0"},
+				"east": {"uv": [2, 0, 4, 16], "texture": "#0"},
+				"south": {"uv": [4, 0, 6, 16], "texture": "#0"},
+				"west": {"uv": [6, 0, 8, 16], "texture": "#0"},
+				"up": {"uv": [10, 2, 8, 0], "texture": "#0"},
+				"down": {"uv": [10, 2, 8, 4], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 6, 1.5]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 5.75, 1.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [-71, 159, 24],
+			"translation": [2.75, 0, 0]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-71, 159, 0],
+			"translation": [2.75, 0, 0]
+		},
+		"ground": {
+			"translation": [0, 2, 0],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"gui": {
+			"rotation": [-33, 0, 43]
+		},
+		"head": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 7.25, 0]
+		},
+		"fixed": {
+			"rotation": [0, 180, 0],
+			"translation": [0, 0, -1]
+		}
+	}
+}

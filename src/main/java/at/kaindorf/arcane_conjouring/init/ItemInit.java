@@ -1,6 +1,7 @@
 package at.kaindorf.arcane_conjouring.init;
 
 import at.kaindorf.arcane_conjouring.Arcane_conjouring;
+import at.kaindorf.arcane_conjouring.item.wand.WandItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -13,7 +14,8 @@ public class ItemInit {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, Arcane_conjouring.MODID);
 
-
+    public static final RegistryObject<Item> WAND = ITEMS.register("wand",
+            () -> new WandItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1)) );
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

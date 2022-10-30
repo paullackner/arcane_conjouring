@@ -14,8 +14,8 @@ public class WandWorkbenchScreen extends AbstractContainerScreen<WandWorkbenchMe
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(Arcane_conjouring.MODID, "textures/gui/wand_workbench_gui.png");
 
-    public WandWorkbenchScreen(WandWorkbenchMenu p_97741_, Inventory p_97742_, Component p_97743_) {
-        super(p_97741_, p_97742_, p_97743_);
+    public WandWorkbenchScreen(WandWorkbenchMenu wandWorkbenchMenu, Inventory inventory, Component component) {
+        super(wandWorkbenchMenu, inventory, component);
     }
 
     @Override

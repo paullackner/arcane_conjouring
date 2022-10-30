@@ -29,7 +29,7 @@ import java.awt.*;
 
 public class WandWorkbenchEntity extends BlockEntity  implements MenuProvider{
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(3) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -51,7 +51,7 @@ public class WandWorkbenchEntity extends BlockEntity  implements MenuProvider{
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new WandWorkbenchMenu(id, inventory, this, null);
+        return new WandWorkbenchMenu(id, inventory, this);
     }
 
     @Override
@@ -96,11 +96,5 @@ public class WandWorkbenchEntity extends BlockEntity  implements MenuProvider{
         }
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
-    }
-
-    public static <E extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, WandWorkbenchEntity pEntity) {
-        if (level.isClientSide()) {
-            return;
-        }
     }
 }
