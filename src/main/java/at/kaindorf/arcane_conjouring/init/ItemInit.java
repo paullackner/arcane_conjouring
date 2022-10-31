@@ -17,6 +17,9 @@ public class ItemInit {
     public static final RegistryObject<Item> WAND = ITEMS.register("wand",
             () -> new WandItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1)) );
 
+    public static final RegistryObject<Item> SPELL_RING = ITEMS.register("spell_ring",
+            () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1)) );
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
