@@ -1,20 +1,20 @@
 package at.kaindorf.arcane_conjouring.block.entity;
 
 import at.kaindorf.arcane_conjouring.init.BlockEntityInit;
+import at.kaindorf.arcane_conjouring.network.ModMessages;
+import at.kaindorf.arcane_conjouring.network.packet.ItemStackSyncS2CPacket;
 import at.kaindorf.arcane_conjouring.screen.WandWorkbenchMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -25,20 +25,21 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
-
-public class WandWorkbenchEntity extends BlockEntity  implements MenuProvider{
+public class WandWorkbenchBlockEntity extends BlockEntity  implements MenuProvider{
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(3) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if (!level.isClientSide()) {
+                ModMessages.sendToClients(new ItemStackSyncS2CPacket(this, worldPosition));
+            }
         }
     };
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    public WandWorkbenchEntity(BlockPos pos, BlockState state) {
+    public WandWorkbenchBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityInit.WAND_WORKBENCH.get() , pos, state);
     }
 
@@ -47,6 +48,15 @@ public class WandWorkbenchEntity extends BlockEntity  implements MenuProvider{
         return Component.literal("Wand Workbench");
     }
 
+    public ItemStack getRenderStack() {
+        return itemHandler.getStackInSlot(0);
+    }
+
+    public void setHandler(ItemStackHandler itemStackHandler) {
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            itemHandler.setStackInSlot(i, itemStackHandler.getStackInSlot(i));
+        }
+    }
 
     @Nullable
     @Override

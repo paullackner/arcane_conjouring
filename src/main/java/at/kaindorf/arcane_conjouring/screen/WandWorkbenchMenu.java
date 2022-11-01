@@ -1,6 +1,6 @@
 package at.kaindorf.arcane_conjouring.screen;
 
-import at.kaindorf.arcane_conjouring.block.entity.WandWorkbenchEntity;
+import at.kaindorf.arcane_conjouring.block.entity.WandWorkbenchBlockEntity;
 import at.kaindorf.arcane_conjouring.init.BlockInit;
 import at.kaindorf.arcane_conjouring.init.MenuTypeInit;
 import at.kaindorf.arcane_conjouring.item.wand.WandItem;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class WandWorkbenchMenu extends AbstractContainerMenu {
 
-    public final WandWorkbenchEntity blockEntity;
+    public final WandWorkbenchBlockEntity blockEntity;
     private final Level level;
 
     public WandWorkbenchMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
@@ -30,7 +30,7 @@ public class WandWorkbenchMenu extends AbstractContainerMenu {
     public WandWorkbenchMenu(int id, Inventory inv, BlockEntity entity) {
         super(MenuTypeInit.WAND_WORKBENCH_MENU.get(), id);
         checkContainerSize(inv, 3);
-        blockEntity = (WandWorkbenchEntity) entity;
+        blockEntity = (WandWorkbenchBlockEntity) entity;
         this.level = inv.player.level;
 
         addPlayerInventory(inv);

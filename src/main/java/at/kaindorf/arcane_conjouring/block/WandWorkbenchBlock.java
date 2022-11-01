@@ -1,9 +1,8 @@
 package at.kaindorf.arcane_conjouring.block;
 
-import at.kaindorf.arcane_conjouring.block.entity.WandWorkbenchEntity;
+import at.kaindorf.arcane_conjouring.block.entity.WandWorkbenchBlockEntity;
 import at.kaindorf.arcane_conjouring.block.state.WandWorkbenchPart;
 import at.kaindorf.arcane_conjouring.block.state.properties.ModBlockStateProperties;
-import at.kaindorf.arcane_conjouring.init.BlockEntityInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,11 +17,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -146,8 +142,8 @@ public class WandWorkbenchBlock extends BaseEntityBlock {
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof  WandWorkbenchEntity) {
-                ((WandWorkbenchEntity) blockEntity).drops();
+            if (blockEntity instanceof WandWorkbenchBlockEntity) {
+                ((WandWorkbenchBlockEntity) blockEntity).drops();
             }
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
@@ -167,8 +163,8 @@ public class WandWorkbenchBlock extends BaseEntityBlock {
                 }
             }
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof WandWorkbenchEntity) {
-                NetworkHooks.openScreen(((ServerPlayer) player), (WandWorkbenchEntity) blockEntity, blockPos);
+            if (blockEntity instanceof WandWorkbenchBlockEntity) {
+                NetworkHooks.openScreen(((ServerPlayer) player), (WandWorkbenchBlockEntity) blockEntity, blockPos);
             } else {
                 throw new IllegalStateException("Container provider missing");
             }
@@ -180,7 +176,7 @@ public class WandWorkbenchBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new WandWorkbenchEntity(pos, state);
+        return new WandWorkbenchBlockEntity(pos, state);
     }
 
 }

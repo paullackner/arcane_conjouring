@@ -4,6 +4,7 @@ import at.kaindorf.arcane_conjouring.init.BlockEntityInit;
 import at.kaindorf.arcane_conjouring.init.BlockInit;
 import at.kaindorf.arcane_conjouring.init.ItemInit;
 import at.kaindorf.arcane_conjouring.init.MenuTypeInit;
+import at.kaindorf.arcane_conjouring.network.ModMessages;
 import at.kaindorf.arcane_conjouring.screen.WandWorkbenchScreen;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -59,16 +60,18 @@ public class Arcane_conjouring {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
-        LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
+        LOGGER.info("COMMON SETUP");
+
+        event.enqueueWork(() -> {
+            ModMessages.register();
+        });
+
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+        LOGGER.info("Server starting");
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
