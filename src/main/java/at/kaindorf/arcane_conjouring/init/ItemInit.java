@@ -2,7 +2,8 @@ package at.kaindorf.arcane_conjouring.init;
 
 import at.kaindorf.arcane_conjouring.Arcane_conjouring;
 import at.kaindorf.arcane_conjouring.item.wand.WandItem;
-import net.minecraft.world.item.BlockItem;
+import at.kaindorf.arcane_conjouring.item.wand.spell.SpellRingItem;
+import at.kaindorf.arcane_conjouring.item.wand.spell.WandTipItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,7 +19,10 @@ public class ItemInit {
             () -> new WandItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1)) );
 
     public static final RegistryObject<Item> SPELL_RING = ITEMS.register("spell_ring",
-            () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1)) );
+            () -> new SpellRingItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1)) );
+
+    public static final RegistryObject<Item> WAND_TIP = ITEMS.register("wand_tip",
+            () -> new WandTipItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1)) );
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

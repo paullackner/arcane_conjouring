@@ -4,6 +4,7 @@ import at.kaindorf.arcane_conjouring.block.entity.WandWorkbenchEntity;
 import at.kaindorf.arcane_conjouring.init.BlockInit;
 import at.kaindorf.arcane_conjouring.init.MenuTypeInit;
 import at.kaindorf.arcane_conjouring.item.wand.WandItem;
+import at.kaindorf.arcane_conjouring.item.wand.spell.SpellRingItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,7 +17,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class WandWorkbenchMenu extends AbstractContainerMenu {
 
@@ -89,7 +89,13 @@ public class WandWorkbenchMenu extends AbstractContainerMenu {
                 }
             }
 
-            this.addSlot(new wandSlotHandler(handler, 1, 48, 30));
+            this.addSlot(new wandSlotHandler(handler, 1, 48, 30) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    super.mayPlace(stack);
+                    return stack.getItem() instanceof SpellRingItem;
+                }
+            });
             this.addSlot(new wandSlotHandler(handler, 2, 16, 30));
         });
     }
