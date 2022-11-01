@@ -23,7 +23,7 @@ public class WandWorkbenchBlockEntityRenderer implements BlockEntityRenderer<Wan
 
     @Override
     public void render(WandWorkbenchBlockEntity blockEntity, float partialTick, PoseStack poseStack,
-                       MultiBufferSource bufferSource, int packedLight, int packedOverly) {
+                       MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
         ItemStack itemStack = blockEntity.getRenderStack();

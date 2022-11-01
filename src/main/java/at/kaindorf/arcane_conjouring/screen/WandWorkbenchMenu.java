@@ -92,8 +92,7 @@ public class WandWorkbenchMenu extends AbstractContainerMenu {
             this.addSlot(new wandSlotHandler(handler, 1, 48, 30) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
-                    super.mayPlace(stack);
-                    return stack.getItem() instanceof SpellRingItem;
+                    return stack.getItem() instanceof SpellRingItem && super.mayPlace(stack);
                 }
             });
             this.addSlot(new wandSlotHandler(handler, 2, 16, 30));
