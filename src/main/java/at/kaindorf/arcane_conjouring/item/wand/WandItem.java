@@ -37,14 +37,15 @@ public class WandItem extends Item {
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         System.out.println("\n\n\n\n\n\ninit\n\n\n\n\n\n\n\n");
         consumer.accept(new IClientItemExtensions() {
-            private final NonNullLazy<BlockEntityWithoutLevelRenderer> ister = NonNullLazy.of(() -> new ModBlockEntityWithoutLevelRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels()));
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                System.out.println("\n\n\n\n\n\nreee\n\n\n\n\n\n\n\n");
-                return ister.get();
+                System.out.println("\n\n\n\n\n\ngetRenderer\n\n\n\n\n\n\n\n");
+                ModBlockEntityWithoutLevelRenderer ister = new ModBlockEntityWithoutLevelRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+                return ister;
             }
         });
     }
+
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {

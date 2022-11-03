@@ -31,13 +31,12 @@ public class WandWorkbenchBlockEntityRenderer implements BlockEntityRenderer<Wan
         poseStack.translate(0.625f, 1.1f, 0.5f);
         poseStack.scale(1f, 1f, 1f);
         poseStack.mulPose(Vector3f.XP.rotationDegrees(90));
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(270));
 
         switch (blockEntity.getBlockState().getValue(WandWorkbenchBlock.FACING)) {
-            case NORTH -> poseStack.mulPose(Vector3f.ZP.rotationDegrees(0));
+            case WEST -> poseStack.mulPose(Vector3f.ZP.rotationDegrees(0));
             case EAST -> poseStack.mulPose(Vector3f.ZP.rotationDegrees(90));
             case SOUTH -> poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
-            case WEST -> poseStack.mulPose(Vector3f.ZP.rotationDegrees(270));
+            case NORTH -> poseStack.mulPose(Vector3f.ZP.rotationDegrees(270));
         }
 
         itemRenderer.renderStatic(itemStack, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, getLigthLevel(blockEntity.getLevel(),

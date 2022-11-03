@@ -1,5 +1,6 @@
 package at.kaindorf.arcane_conjouring;
 
+import at.kaindorf.arcane_conjouring.client.ClientEventHandler;
 import at.kaindorf.arcane_conjouring.init.BlockEntityInit;
 import at.kaindorf.arcane_conjouring.init.BlockInit;
 import at.kaindorf.arcane_conjouring.init.ItemInit;
@@ -47,6 +48,7 @@ public class Arcane_conjouring {
 
     public Arcane_conjouring() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        ClientEventHandler.register();
 
         BlockInit.register(modEventBus);
         ItemInit.register(modEventBus);

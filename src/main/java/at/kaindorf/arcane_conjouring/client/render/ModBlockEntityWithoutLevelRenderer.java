@@ -56,7 +56,7 @@ public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelR
         } else {
             if (itemStack.is(ItemInit.WAND.get())) {
                 poseStack.pushPose();
-                poseStack.scale(1.0F, 1.0F, 1.0F);
+                poseStack.scale(1.0F, -1.0F, 1.0F);
                 VertexConsumer wandVertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, this.wandModel.renderType(WandTipModel.TEXTURE), false, itemStack.hasFoil());
                 this.wandModel.renderToBuffer(poseStack, wandVertexConsumer, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
                 poseStack.popPose();
