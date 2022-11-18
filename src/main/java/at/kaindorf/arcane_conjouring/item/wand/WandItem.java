@@ -1,8 +1,7 @@
 package at.kaindorf.arcane_conjouring.item.wand;
 
 import at.kaindorf.arcane_conjouring.client.render.ModBlockEntityWithoutLevelRenderer;
-import at.kaindorf.arcane_conjouring.item.wand.spell.SpellRingItem;
-import net.minecraft.client.Minecraft;
+import at.kaindorf.arcane_conjouring.item.wand.addon.SpellRingItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
@@ -14,9 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.NonNullLazy;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -38,7 +35,6 @@ public class WandItem extends Item {
         consumer.accept(new IClientItemExtensions() {
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                System.out.println("\n\n\n\n\n\ngetRenderer\n\n\n\n\n\n\n\n");
                 return ModBlockEntityWithoutLevelRenderer.RENDERER;
             }
         });

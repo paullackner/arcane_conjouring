@@ -1,6 +1,7 @@
-package at.kaindorf.arcane_conjouring.item.wand.spell;
+package at.kaindorf.arcane_conjouring.item.wand.addon;
 
 import at.kaindorf.arcane_conjouring.client.render.ModBlockEntityWithoutLevelRenderer;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -9,7 +10,7 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
-public class WandTipItem extends Item {
+public class WandTipItem extends Item implements IWandAddon {
 
     public WandTipItem(Properties properties) {
         super(properties);
@@ -20,12 +21,7 @@ public class WandTipItem extends Item {
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return ModBlockEntityWithoutLevelRenderer.RENDERER;
-            }
-        });
+    public void setPoseStack(PoseStack poseStack) {
+        poseStack.translate(0.0F, 0.95F, 0.0F);
     }
 }

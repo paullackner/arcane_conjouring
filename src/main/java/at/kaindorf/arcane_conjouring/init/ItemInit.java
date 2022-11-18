@@ -2,8 +2,8 @@ package at.kaindorf.arcane_conjouring.init;
 
 import at.kaindorf.arcane_conjouring.Arcane_conjouring;
 import at.kaindorf.arcane_conjouring.item.wand.WandItem;
-import at.kaindorf.arcane_conjouring.item.wand.spell.SpellRingItem;
-import at.kaindorf.arcane_conjouring.item.wand.spell.WandTipItem;
+import at.kaindorf.arcane_conjouring.item.wand.addon.SpellRingItem;
+import at.kaindorf.arcane_conjouring.item.wand.addon.WandTipItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;

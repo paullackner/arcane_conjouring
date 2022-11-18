@@ -4,7 +4,7 @@ import at.kaindorf.arcane_conjouring.block.entity.WandWorkbenchBlockEntity;
 import at.kaindorf.arcane_conjouring.init.BlockInit;
 import at.kaindorf.arcane_conjouring.init.MenuTypeInit;
 import at.kaindorf.arcane_conjouring.item.wand.WandItem;
-import at.kaindorf.arcane_conjouring.item.wand.spell.SpellRingItem;
+import at.kaindorf.arcane_conjouring.item.wand.addon.SpellRingItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;

@@ -1,6 +1,7 @@
 package at.kaindorf.arcane_conjouring.client.render;
 import at.kaindorf.arcane_conjouring.init.ItemInit;
-import at.kaindorf.arcane_conjouring.item.wand.spell.SpellRingItem;
+import at.kaindorf.arcane_conjouring.item.wand.addon.IWandAddon;
+import at.kaindorf.arcane_conjouring.item.wand.addon.SpellRingItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -18,7 +19,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.RenderTypeHelper;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.ItemStackHandler;
 
 
 public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelRenderer {
@@ -28,17 +28,13 @@ public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelR
 
     public ModBlockEntityWithoutLevelRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher, EntityModelSet entityModelSet) {
         super(blockEntityRenderDispatcher, entityModelSet);
-        System.out.println("create RENDERER");
     }
 
     @Override
-    public void onResourceManagerReload(ResourceManager resourceManager) {
-        System.out.println("\nresourcereload");
-    }
+    public void onResourceManagerReload(ResourceManager resourceManager) {}
 
     @Override
     public void renderByItem(ItemStack itemStack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        System.out.println("\nrender by Item");
         Item item = itemStack.getItem();
         Minecraft minecraft = Minecraft.getInstance();
         ItemRenderer itemRenderer = minecraft.getItemRenderer();
@@ -48,26 +44,27 @@ public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelR
             if (itemStack.is(ItemInit.WAND.get())) {
                 poseStack.pushPose();
                 poseStack.scale(1.0F, 1.0F, 1.0F);
-                BakedModel model = itemRenderer.getModel(itemStack, null, minecraft.player, 0);
-                RenderType renderType = RenderTypeHelper.getFallbackItemRenderType(itemStack, model, true);
-
-                VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, renderType, false, itemStack.hasFoil());
-                itemRenderer.renderModelLists(model, itemStack, packedLight, packedOverlay, poseStack, vertexConsumer);
-                poseStack.popPose();
+                render(itemStack, poseStack, bufferSource, packedLight, packedOverlay, minecraft, itemRenderer, itemStack);
                 itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-                    if (handler.getStackInSlot(0).getItem() instanceof SpellRingItem) {
-                        poseStack.pushPose();
-                        poseStack.scale(1.0F, 1.0F, 1.0F);
-                        ItemStack spellRing = handler.getStackInSlot(0);
-                        BakedModel spellRingModel = itemRenderer.getModel(spellRing, null, minecraft.player, 0);
-                        RenderType spellRingRenderType = RenderTypeHelper.getFallbackItemRenderType(itemStack, spellRingModel, true);
-                        VertexConsumer spellRingVertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, spellRingRenderType, false, spellRing.hasFoil());
-                        itemRenderer.renderModelLists(spellRingModel, spellRing, packedLight, packedOverlay, poseStack, spellRingVertexConsumer);
-
-                        poseStack.popPose();
+                    for (int i = 0; i < handler.getSlots(); i++) {
+                        ItemStack addon = handler.getStackInSlot(i);
+                        if (addon.getItem() instanceof IWandAddon) {
+                            poseStack.pushPose();
+                            poseStack.scale(1.0F, 1.0F, 1.0F);
+                            ((IWandAddon) addon.getItem()).setPoseStack(poseStack);
+                            render(itemStack, poseStack, bufferSource, packedLight, packedOverlay, minecraft, itemRenderer, addon);
+                        }
                     }
                 });
             }
         }
+    }
+
+    private void render(ItemStack itemStack, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, Minecraft minecraft, ItemRenderer itemRenderer, ItemStack item) {
+        BakedModel addonModel = itemRenderer.getModel(item, null, minecraft.player, 0);
+        RenderType addonRenderType = RenderTypeHelper.getFallbackItemRenderType(itemStack, addonModel, true);
+        VertexConsumer addonVertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, addonRenderType, false, item.hasFoil());
+        itemRenderer.renderModelLists(addonModel, item, packedLight, packedOverlay, poseStack, addonVertexConsumer);
+        poseStack.popPose();
     }
 }
