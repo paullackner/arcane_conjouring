@@ -3,10 +3,7 @@ package at.kaindorf.arcane_conjouring.client.render;
 import com.google.common.collect.*;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockModel;
@@ -20,9 +17,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ChunkRenderTypeSet;
-import net.minecraftforge.client.model.CompositeModel;
 import net.minecraftforge.client.model.IDynamicBakedModel;
-import net.minecraftforge.client.model.SeparateTransformsModel;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
@@ -40,18 +35,16 @@ public class WandDynamicModel implements IUnbakedGeometry<WandDynamicModel> {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private final BlockModel baseModel;
-    private final ImmutableMap<ItemTransforms.TransformType, BlockModel> perspectives;
     private final boolean deprecatedLoader;
 
-    public WandDynamicModel(BlockModel baseModel, ImmutableMap<ItemTransforms.TransformType, BlockModel> perspectives)
+    public WandDynamicModel(BlockModel baseModel)
     {
-        this(baseModel, perspectives, false);
+        this(baseModel, false);
     }
 
-    private WandDynamicModel(BlockModel baseModel, ImmutableMap<ItemTransforms.TransformType, BlockModel> perspectives, boolean deprecatedLoader)
+    private WandDynamicModel(BlockModel baseModel, boolean deprecatedLoader)
     {
         this.baseModel = baseModel;
-        this.perspectives = perspectives;
         this.deprecatedLoader = deprecatedLoader;
     }
 
@@ -60,14 +53,12 @@ public class WandDynamicModel implements IUnbakedGeometry<WandDynamicModel> {
     {
         if (deprecatedLoader)
             LOGGER.warn("Model \"" + modelLocation + "\" is using the deprecated loader \"forge:separate-perspective\" instead of \"forge:separate_transforms\". This loader will be removed in 1.20.");
-
+        LOGGER.debug("bake wand model");
         return new WandDynamicModel.Baked(
                 context.useAmbientOcclusion(), context.isGui3d(), context.useBlockLight(),
                 spriteGetter.apply(context.getMaterial("particle")), overrides,
                 baseModel.bake(bakery, baseModel, spriteGetter, modelState, modelLocation, context.useBlockLight()),
-                ImmutableMap.copyOf(Maps.transformValues(perspectives, value -> {
-                    return value.bake(bakery, value, spriteGetter, modelState, modelLocation, context.useBlockLight());
-                }))
+                context.getTransforms()
         );
     }
 
@@ -78,8 +69,6 @@ public class WandDynamicModel implements IUnbakedGeometry<WandDynamicModel> {
         if (context.hasMaterial("particle"))
             textures.add(context.getMaterial("particle"));
         textures.addAll(baseModel.getMaterials(modelGetter, missingTextureErrors));
-        for (BlockModel model : perspectives.values())
-            textures.addAll(model.getMaterials(modelGetter, missingTextureErrors));
         return textures;
     }
 
@@ -90,9 +79,9 @@ public class WandDynamicModel implements IUnbakedGeometry<WandDynamicModel> {
         private final TextureAtlasSprite particle;
         private final ItemOverrides overrides;
         private final BakedModel baseModel;
-        private final ImmutableMap<ItemTransforms.TransformType, BakedModel> perspectives;
+        private final ItemTransforms transforms;
 
-        public Baked(boolean isAmbientOcclusion, boolean isGui3d, boolean isSideLit, TextureAtlasSprite particle, ItemOverrides overrides, BakedModel baseModel, ImmutableMap<ItemTransforms.TransformType, BakedModel> perspectives)
+        public Baked(boolean isAmbientOcclusion, boolean isGui3d, boolean isSideLit, TextureAtlasSprite particle, ItemOverrides overrides, BakedModel baseModel, ItemTransforms transforms)
         {
             this.isAmbientOcclusion = isAmbientOcclusion;
             this.isGui3d = isGui3d;
@@ -100,7 +89,7 @@ public class WandDynamicModel implements IUnbakedGeometry<WandDynamicModel> {
             this.particle = particle;
             this.overrides = overrides;
             this.baseModel = baseModel;
-            this.perspectives = perspectives;
+            this.transforms = transforms;
         }
 
         @NotNull
@@ -153,17 +142,6 @@ public class WandDynamicModel implements IUnbakedGeometry<WandDynamicModel> {
         }
 
         @Override
-        public BakedModel applyTransform(ItemTransforms.TransformType cameraTransformType, PoseStack poseStack, boolean applyLeftHandTransform)
-        {
-            if (perspectives.containsKey(cameraTransformType))
-            {
-                BakedModel p = perspectives.get(cameraTransformType);
-                return p.applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
-            }
-            return baseModel.applyTransform(cameraTransformType, poseStack, applyLeftHandTransform);
-        }
-
-        @Override
         public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data)
         {
             return baseModel.getRenderTypes(state, rand, data);
@@ -189,7 +167,7 @@ public class WandDynamicModel implements IUnbakedGeometry<WandDynamicModel> {
                 }
             }
 
-            return new WandDynamicModel(baseModel, ImmutableMap.copyOf(perspectives));
+            return new WandDynamicModel(baseModel);
         }
     }
 }

@@ -35,13 +35,11 @@ public class WandItem extends Item {
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        System.out.println("\n\n\n\n\n\ninit\n\n\n\n\n\n\n\n");
         consumer.accept(new IClientItemExtensions() {
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 System.out.println("\n\n\n\n\n\ngetRenderer\n\n\n\n\n\n\n\n");
-                ModBlockEntityWithoutLevelRenderer ister = new ModBlockEntityWithoutLevelRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
-                return ister;
+                return ModBlockEntityWithoutLevelRenderer.RENDERER;
             }
         });
     }
