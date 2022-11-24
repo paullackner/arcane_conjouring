@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "arcane_conjouring:block/veilwood_sapling"
+  },
+  "render_type": "cutout"
+}

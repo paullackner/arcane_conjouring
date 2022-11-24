@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#arcane_conjouring:veilwood_logs"
+    "arcane_conjouring:veilwood_log",
+    "arcane_conjouring:veilwood_wood",
+    "arcane_conjouring:stripped_veilwood_log",
+    "arcane_conjouring:stripped_veilwood_wood"
   ]
 }

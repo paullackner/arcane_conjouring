@@ -1,7 +1,9 @@
-package at.kaindorf.arcane_conjouring.block.custom;
+package at.kaindorf.arcane_conjouring.block;
 
+import at.kaindorf.arcane_conjouring.init.BlockInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -30,19 +32,16 @@ public class ModFlammableRotatedPillarBlock extends RotatedPillarBlock {
         return 5;
     }
 
-    /*@Nullable
-    @Override
-    public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolAction toolAction) {
-        if(stack.getItem() instanceof AxeItem) {
-
-        }
-
-        return super.getToolModifiedState(state, world, pos, player, stack, toolAction);
-    }*/
-
     @Override
     public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction toolAction, boolean simulate) {
-        //TODO
+        if (context.getItemInHand().getItem() instanceof AxeItem) {
+            if (state.is(BlockInit.VEILWOOD_LOG.get())) {
+                return BlockInit.STRIPPED_VEILWOOD_LOG.get().defaultBlockState().setValue(AXIS, state.getValue(AXIS));
+            }
+            if (state.is(BlockInit.VEILWOOD_WOOD.get())) {
+                return BlockInit.STRIPPED_VEILWOOD_WOOD.get().defaultBlockState().setValue(AXIS, state.getValue(AXIS));
+            }
+        }
         return super.getToolModifiedState(state, context, toolAction, simulate);
     }
 }

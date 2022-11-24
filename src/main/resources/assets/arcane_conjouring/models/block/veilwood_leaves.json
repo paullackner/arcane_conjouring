@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "arcane_conjouring:block/veilwood_leaves"
+  },
+  "render_type": "cutout"
+}

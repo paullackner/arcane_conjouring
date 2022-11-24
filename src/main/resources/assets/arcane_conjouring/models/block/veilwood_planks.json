@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "arcane_conjouring:block/veilwood_planks"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "arcane_conjouring:block/veilwood_log",
+    "side": "arcane_conjouring:block/veilwood_log"
+  }
+}
