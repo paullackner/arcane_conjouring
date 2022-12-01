@@ -7,6 +7,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CraftingTableBlock;
+import net.minecraft.world.level.block.LoomBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
@@ -23,6 +24,10 @@ public class BlockInit {
 
     public static final RegistryObject<Block> WAND_WORKBENCH = registerBlock("wand_workbench",
             () -> new WandWorkbenchBlock(BlockBehaviour.Properties.of(Material.WOOD)
+                    .noOcclusion().strength(0.2f).sound(SoundType.WOOD)), CreativeModeTab.TAB_MISC);
+
+    public static final RegistryObject<Block> SPELL_TABLE = registerBlock("spell_table",
+            () -> new Block(BlockBehaviour.Properties.of(Material.WOOD)
                     .noOcclusion().strength(0.2f).sound(SoundType.WOOD)), CreativeModeTab.TAB_MISC);
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {

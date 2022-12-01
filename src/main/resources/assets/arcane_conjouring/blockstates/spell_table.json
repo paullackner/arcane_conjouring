@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "arcane_conjouring:block/spell_table"
+    }
+  }
+}
