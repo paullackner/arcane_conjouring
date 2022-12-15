@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "arcane_conjouring:block/wand_workbench"
+    },
+    "facing=south": {
+      "model": "arcane_conjouring:block/wand_workbench",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "arcane_conjouring:block/wand_workbench",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "arcane_conjouring:block/wand_workbench",
+      "y": 90
     }
   }
 }

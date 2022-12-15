@@ -1,18 +1,18 @@
 package at.kaindorf.arcane_conjouring.init;
 
 import at.kaindorf.arcane_conjouring.Arcane_conjouring;
-import at.kaindorf.arcane_conjouring.block.ModFlammableRotatedPillarBlock;
+import at.kaindorf.arcane_conjouring.block.WandWorkbenchBlock;
 import at.kaindorf.arcane_conjouring.world.feature.tree.VeilwoodTreeGrower;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.LoomBlock;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -80,6 +80,11 @@ public class BlockInit {
             () -> new SaplingBlock(new VeilwoodTreeGrower(), BlockBehaviour.Properties.copy(Blocks.BIRCH_SAPLING)),
             ModCreativeModeTab.ARCANE_CONJOURING_TAB);
 
+
+    public static final RegistryObject<Block> SPELL_TABLE = registerBlock("spell_table",
+            () -> new Block(BlockBehaviour.Properties.of(Material.WOOD)
+                    .noOcclusion().strength(0.2f).sound(SoundType.WOOD)), CreativeModeTab.TAB_MISC);
+
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
         registerBlockItem(name, registryObject, tab);
@@ -90,4 +95,7 @@ public class BlockInit {
         ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
     }
 
+    public static void register(IEventBus eventBus) {
+        BLOCKS.register(eventBus);
+    }
 }

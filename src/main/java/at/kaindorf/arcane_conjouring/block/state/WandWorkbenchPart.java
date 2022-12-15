@@ -6,7 +6,6 @@ public enum WandWorkbenchPart implements StringRepresentable {
     HEAD("head"),
     FOOT("foot");
 
-
     private final String name;
 
     WandWorkbenchPart(String name) {
@@ -18,6 +17,6 @@ public enum WandWorkbenchPart implements StringRepresentable {
     }
 
     public String getSerializedName() {
-        return null;
+        return this.name;
     }
 }
