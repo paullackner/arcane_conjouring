@@ -28,7 +28,7 @@ public class ModConfiguratedFeatures {
             CONFIGURED_FEATURES.register("veilwood", () ->
                     new ConfiguredFeature<>(Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                            BlockStateProvider.simple(BlockInit.VEILWOOD_LOG.get()),
-                           new StraightTrunkPlacer(5, 6, 3),
+                           new StraightTrunkPlacer(6, 1, 2),
                            BlockStateProvider.simple(BlockInit.VEILWOOD_LEAVES.get()),
                            new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
                            new TwoLayersFeatureSize(1, 0, 2)).build()));

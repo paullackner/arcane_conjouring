@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": {"model": "arcane_conjouring:block/veilwood_planks"}
+    "": {
+      "model": "arcane_conjouring:block/veilwood_planks"
+    }
   }
 }

@@ -25,20 +25,20 @@ public class BlockInit {
 
     public static final RegistryObject<Block> WAND_WORKBENCH = registerBlock("wand_workbench",
             () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3f).sound(SoundType.WOOD)),
-            CreativeModeTab.TAB_MISC);
+            ModCreativeModeTab.ARCANE_CONJOURING_TAB);
 
     public static final RegistryObject<Block> VEILWOOD_LOG = registerBlock("veilwood_log",
             () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)),
-            CreativeModeTab.TAB_BUILDING_BLOCKS);
+            ModCreativeModeTab.ARCANE_CONJOURING_TAB);
     public static final RegistryObject<Block> VEILWOOD_WOOD = registerBlock("veilwood_wood",
             () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)),
-            CreativeModeTab.TAB_BUILDING_BLOCKS);
+            ModCreativeModeTab.ARCANE_CONJOURING_TAB);
     public static final RegistryObject<Block> STRIPPED_VEILWOOD_LOG = registerBlock("stripped_veilwood_log",
             () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_LOG)),
-            CreativeModeTab.TAB_BUILDING_BLOCKS);
+            ModCreativeModeTab.ARCANE_CONJOURING_TAB);
     public static final RegistryObject<Block> STRIPPED_VEILWOOD_WOOD = registerBlock("stripped_veilwood_wood",
             () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_WOOD)),
-            CreativeModeTab.TAB_BUILDING_BLOCKS);
+            ModCreativeModeTab.ARCANE_CONJOURING_TAB);
 
     public static final RegistryObject<Block> VEILWOOD_PLANKS = registerBlock("veilwood_planks",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)) {
@@ -56,7 +56,7 @@ public class BlockInit {
                 public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
                     return 20;
                 }
-            }, CreativeModeTab.TAB_BUILDING_BLOCKS);
+            }, ModCreativeModeTab.ARCANE_CONJOURING_TAB);
 
     public static final RegistryObject<Block> VEILWOOD_LEAVES = registerBlock("veilwood_leaves",
             () -> new LeavesBlock(BlockBehaviour.Properties.copy(Blocks.BIRCH_LEAVES)) {
@@ -74,11 +74,11 @@ public class BlockInit {
                 public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
                     return 60;
                 }
-            }, CreativeModeTab.TAB_BUILDING_BLOCKS);
+            }, ModCreativeModeTab.ARCANE_CONJOURING_TAB);
 
     public static final RegistryObject<Block> VEILWOOD_SAPLING = registerBlock("veilwood_sapling",
-            () -> new SaplingBlock(new VeilwoodTreeGrower(),
-                    BlockBehaviour.Properties.copy(Blocks.BIRCH_SAPLING)), CreativeModeTab.TAB_BUILDING_BLOCKS);
+            () -> new SaplingBlock(new VeilwoodTreeGrower(), BlockBehaviour.Properties.copy(Blocks.BIRCH_SAPLING)),
+            ModCreativeModeTab.ARCANE_CONJOURING_TAB);
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
