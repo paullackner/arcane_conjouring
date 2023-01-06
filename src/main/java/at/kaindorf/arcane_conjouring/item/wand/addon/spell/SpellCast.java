@@ -1,5 +1,6 @@
 package at.kaindorf.arcane_conjouring.item.wand.addon.spell;
 
+import at.kaindorf.arcane_conjouring.item.wand.addon.CastingTarget;
 import net.minecraft.world.entity.LivingEntity;
 
 public abstract class SpellCast {
@@ -9,7 +10,7 @@ public abstract class SpellCast {
         this.cost = cost;
     }
 
-    public void cast(LivingEntity entity) {
+    public void cast(CastingTarget target) {
 
     }
 

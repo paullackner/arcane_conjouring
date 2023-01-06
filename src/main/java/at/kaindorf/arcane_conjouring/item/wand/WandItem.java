@@ -1,7 +1,9 @@
 package at.kaindorf.arcane_conjouring.item.wand;
 
 import at.kaindorf.arcane_conjouring.client.render.ModBlockEntityWithoutLevelRenderer;
+import at.kaindorf.arcane_conjouring.item.wand.addon.CastingTarget;
 import at.kaindorf.arcane_conjouring.item.wand.addon.SpellRingItem;
+import at.kaindorf.arcane_conjouring.item.wand.addon.WandTipItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
@@ -49,10 +51,16 @@ public class WandItem extends Item {
         }
 
         wand.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            if (handler.getStackInSlot(0).getItem() instanceof SpellRingItem) {
-                SpellRingItem spellRing = (SpellRingItem) handler.getStackInSlot(0).getItem();
-                spellRing.apply(player);
+            if (!(handler.getStackInSlot(0).getItem() instanceof SpellRingItem spellRing)) return;
+
+            if (!(handler.getStackInSlot(1).getItem() instanceof WandTipItem wandTip)) {
+                CastingTarget target = new CastingTarget(player);
+                spellRing.apply(target);
+                return;
             }
+
+            wandTip.cast(spellRing, level, player);
+
         });
 
         return InteractionResultHolder.success(wand);

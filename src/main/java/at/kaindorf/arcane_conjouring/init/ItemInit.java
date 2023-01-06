@@ -2,6 +2,7 @@ package at.kaindorf.arcane_conjouring.init;
 
 import at.kaindorf.arcane_conjouring.Arcane_conjouring;
 import at.kaindorf.arcane_conjouring.item.wand.WandItem;
+import at.kaindorf.arcane_conjouring.item.wand.addon.ProjectileWandTipItem;
 import at.kaindorf.arcane_conjouring.item.wand.addon.SpellRingItem;
 import at.kaindorf.arcane_conjouring.item.wand.addon.WandTipItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -22,7 +23,7 @@ public class ItemInit {
             () -> new SpellRingItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1)) );
 
     public static final RegistryObject<Item> WAND_TIP = ITEMS.register("wand_tip",
-            () -> new WandTipItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1)) );
+            () -> new ProjectileWandTipItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1)) );
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

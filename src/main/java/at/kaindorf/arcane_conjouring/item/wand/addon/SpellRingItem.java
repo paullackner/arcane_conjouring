@@ -26,8 +26,8 @@ public class SpellRingItem extends Item implements IWandAddon{
         super(properties);
     }
 
-    public void apply(LivingEntity entity) {
-        spell.apply(entity);
+    public void apply(CastingTarget target) {
+        spell.apply(target);
     }
 
     @Override
