@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 public abstract class SpellCast {
     private final int cost;
 
-    protected SpellCast(int cost) {
+    public SpellCast(int cost) {
         this.cost = cost;
     }
 

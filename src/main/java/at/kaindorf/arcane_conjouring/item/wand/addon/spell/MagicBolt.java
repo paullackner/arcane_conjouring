@@ -46,7 +46,7 @@ public class MagicBolt extends AbstractHurtingProjectile {
     protected void onHitBlock(BlockHitResult hitResult) {
         super.onHitBlock(hitResult);
         if (spellRing != null) {
-            spellRing.apply(new CastingTarget(hitResult.getBlockPos()));
+            spellRing.apply(new CastingTarget(hitResult.getBlockPos(), level));
         }
     }
 

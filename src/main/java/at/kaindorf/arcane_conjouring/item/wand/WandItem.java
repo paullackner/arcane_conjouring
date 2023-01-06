@@ -58,9 +58,11 @@ public class WandItem extends Item {
                 spellRing.apply(target);
                 return;
             }
-
-            wandTip.cast(spellRing, level, player);
-
+            int cost = player.isCreative() ? 0 : spellRing.getCost();
+            if (cost <= player.totalExperience) {
+                wandTip.cast(spellRing, level, player);
+                player.giveExperiencePoints(-cost);
+            }
         });
 
         return InteractionResultHolder.success(wand);

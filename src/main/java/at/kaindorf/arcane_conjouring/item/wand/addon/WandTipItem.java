@@ -15,6 +15,7 @@ public class WandTipItem extends Item implements IWandAddon {
 
     public void cast(SpellRingItem spellRing, Level level, LivingEntity entity) {
 
+
         spellRing.apply(target);
     }
 

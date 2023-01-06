@@ -21,11 +21,11 @@ public class EffectSpellCast extends SpellCast {
 
     @Override
     public void cast(CastingTarget target) {
-
         super.cast(target);
-        LivingEntity entity = target.getEntity();
-        if (entity == null) return;
 
-        entity.addEffect(new MobEffectInstance(effect, duration, level));
+        LivingEntity entity = target.getEntity();
+        if (entity != null) {
+            entity.addEffect(new MobEffectInstance(effect, duration, level));
+        }
     }
 }
