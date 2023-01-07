@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -19,18 +20,18 @@ import net.minecraft.world.phys.Vec3;
 
 public class MagicBolt extends AbstractHurtingProjectile {
 
-    private SpellRingItem spellRing;
+    private ItemStack ring;
 
 
     public MagicBolt(EntityType<? extends AbstractHurtingProjectile> entityType, Level level) {
         super(entityType, level);
     }
 
-    public MagicBolt(Level level, LivingEntity entity, SpellRingItem spellRing) {
+    public MagicBolt(Level level, LivingEntity entity, ItemStack ring) {
         this(EntityInit.MAGIC_BOLT.get(), level);
         this.setPos(entity.getX(), entity.getEyeY() - 0.1, entity.getZ());
         this.setOwner(entity);
-        this.spellRing = spellRing;
+        this.ring = ring;
     }
 
     @Override
@@ -45,8 +46,9 @@ public class MagicBolt extends AbstractHurtingProjectile {
     @Override
     protected void onHitBlock(BlockHitResult hitResult) {
         super.onHitBlock(hitResult);
-        if (spellRing != null) {
-            spellRing.apply(new CastingTarget(hitResult.getBlockPos(), level));
+        if (ring != null) {
+
+            SpellRingItem.apply(ring, new CastingTarget(hitResult.getBlockPos(), level));
         }
     }
 
@@ -54,8 +56,8 @@ public class MagicBolt extends AbstractHurtingProjectile {
     protected void onHitEntity(EntityHitResult hitResult) {
         super.onHitEntity(hitResult);
 
-        if (hitResult.getEntity() instanceof LivingEntity entity && spellRing != null)
-            spellRing.apply(new CastingTarget(entity));
+        if (hitResult.getEntity() instanceof LivingEntity entity && ring != null)
+            SpellRingItem.apply(ring, new CastingTarget(entity));
     }
 
     @Override

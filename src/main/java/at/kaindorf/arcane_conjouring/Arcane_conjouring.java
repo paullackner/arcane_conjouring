@@ -49,6 +49,7 @@ public class Arcane_conjouring {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ClientEventHandler.register();
 
+        SpellCastInit.register(modEventBus);
         BlockInit.register(modEventBus);
         ItemInit.register(modEventBus);
         EntityInit.register(modEventBus);

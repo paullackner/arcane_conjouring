@@ -11,7 +11,10 @@ public class Spell {
 
     public Spell(List<SpellCast> casts) {
         this.casts = casts;
+    }
 
+    public void addCast(SpellCast cast) {
+        casts.add(cast);
     }
 
     public int getCost() {

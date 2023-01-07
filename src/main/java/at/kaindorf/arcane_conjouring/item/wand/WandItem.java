@@ -51,17 +51,19 @@ public class WandItem extends Item {
         }
 
         wand.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            if (!(handler.getStackInSlot(0).getItem() instanceof SpellRingItem spellRing)) return;
+            ItemStack ring = handler.getStackInSlot(0);
+            if (!(ring.getItem() instanceof SpellRingItem spellRing)) return;
 
             if (!(handler.getStackInSlot(1).getItem() instanceof WandTipItem wandTip)) {
                 CastingTarget target = new CastingTarget(player);
-                spellRing.apply(target);
+                SpellRingItem.apply(ring, target);
                 return;
             }
             int cost = player.isCreative() ? 0 : spellRing.getCost();
             if (cost <= player.totalExperience) {
-                wandTip.cast(spellRing, level, player);
+                wandTip.cast(ring, level, player);
                 player.giveExperiencePoints(-cost);
+
             }
         });
 
