@@ -4,6 +4,8 @@ import at.kaindorf.arcane_conjouring.item.wand.addon.CastingTarget;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 
@@ -14,6 +16,7 @@ public class ExplosionSpellCast extends SpellCast{
     public ExplosionSpellCast(Explosion.BlockInteraction blockInteraction) {
         super(25);
         this.blockInteraction = blockInteraction;
+        this.ingredients.add(new ItemStack(Items.TNT));
     }
 
 

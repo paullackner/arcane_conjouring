@@ -6,5 +6,6 @@
   "item.arcane_conjouring.wand_tip": "Wand Tip",
   "arcane_conjouring.block_break": "Block Break",
   "arcane_conjouring.explosion": "Explosion",
-  "arcane_conjouring.effect": "Effect: "
+  "arcane_conjouring.effect": "Effect: ",
+  "spell_ring.apply": "Apply Spells"
 }

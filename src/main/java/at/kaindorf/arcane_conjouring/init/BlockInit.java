@@ -1,6 +1,7 @@
 package at.kaindorf.arcane_conjouring.init;
 
 import at.kaindorf.arcane_conjouring.Arcane_conjouring;
+import at.kaindorf.arcane_conjouring.block.SpellTableBlock;
 import at.kaindorf.arcane_conjouring.block.WandWorkbenchBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -27,7 +28,7 @@ public class BlockInit {
                     .noOcclusion().strength(0.2f).sound(SoundType.WOOD)), CreativeModeTab.TAB_MISC);
 
     public static final RegistryObject<Block> SPELL_TABLE = registerBlock("spell_table",
-            () -> new Block(BlockBehaviour.Properties.of(Material.WOOD)
+            () -> new SpellTableBlock(BlockBehaviour.Properties.of(Material.WOOD)
                     .noOcclusion().strength(0.2f).sound(SoundType.WOOD)), CreativeModeTab.TAB_MISC);
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {

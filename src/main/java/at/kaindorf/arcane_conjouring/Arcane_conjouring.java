@@ -4,6 +4,8 @@ import at.kaindorf.arcane_conjouring.client.ClientEventHandler;
 import at.kaindorf.arcane_conjouring.client.render.MagicBoltRenderer;
 import at.kaindorf.arcane_conjouring.init.*;
 import at.kaindorf.arcane_conjouring.network.ModMessages;
+import at.kaindorf.arcane_conjouring.screen.SpellTableMenu;
+import at.kaindorf.arcane_conjouring.screen.SpellTableScreen;
 import at.kaindorf.arcane_conjouring.screen.WandWorkbenchScreen;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -88,6 +90,7 @@ public class Arcane_conjouring {
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
 
             MenuScreens.register(MenuTypeInit.WAND_WORKBENCH_MENU.get(), WandWorkbenchScreen::new);
+            MenuScreens.register(MenuTypeInit.SPELL_TABLE_MENU.get(), SpellTableScreen::new);
 
             EntityRenderers.register(EntityInit.MAGIC_BOLT.get(), MagicBoltRenderer::new);
         }
