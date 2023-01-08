@@ -59,7 +59,7 @@ public class WandItem extends Item {
                 SpellRingItem.apply(ring, target);
                 return;
             }
-            int cost = player.isCreative() ? 0 : spellRing.getCost();
+            int cost = player.isCreative() ? 0 : SpellRingItem.getCost(ring);
             if (cost <= player.totalExperience) {
                 wandTip.cast(ring, level, player);
                 player.giveExperiencePoints(-cost);

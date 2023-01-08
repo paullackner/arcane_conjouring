@@ -23,10 +23,6 @@ import java.util.List;
 
 public class SpellRingItem extends Item implements IWandAddon{
 
-    private Spell spell = new Spell(new ArrayList<>());
-
-
-
     public SpellRingItem(Properties properties) {
         super(properties);
     }
@@ -43,7 +39,13 @@ public class SpellRingItem extends Item implements IWandAddon{
         for (int i = 0; i < listTag.size(); ++i) {
             CompoundTag compoundTag = listTag.getCompound(i);
             ResourceLocation resourceLocation = ResourceLocation.tryParse(compoundTag.getString("location"));
-            components.add(Component.translatable(resourceLocation.toLanguageKey()));
+            String langkey = resourceLocation.toLanguageKey();
+            if (langkey.contains("effect")) {
+                String[] keys = langkey.split("-");
+                components.add(Component.translatable(keys[0]).append(Component.translatable(keys[1])));
+            } else {
+                components.add(Component.translatable(langkey));
+            }
 
         }
 
@@ -85,7 +87,17 @@ public class SpellRingItem extends Item implements IWandAddon{
         }
     }
 
-    public int getCost() { return spell.getCost();}
+    public static int getCost(ItemStack stack) {
+        ListTag listTag = getCasts(stack);
+        int cost = 0;
+        for (int i = 0; i < listTag.size(); ++i) {
+            CompoundTag compoundTag = listTag.getCompound(i);
+            ResourceLocation resourceLocation = ResourceLocation.tryParse(compoundTag.getString("location"));
+            cost += SpellCastInit.REGISTRY.get().getValue(resourceLocation).getCost();
+        }
+
+        return cost;
+    }
 
     @Override
     public void setPoseStack(PoseStack poseStack) {
