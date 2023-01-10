@@ -92,6 +92,8 @@ public class WandWorkbenchBlockEntity extends BlockEntity  implements MenuProvid
         super.saveAdditional(nbt);
     }
 
+
+
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);

@@ -1,17 +1,18 @@
 package at.kaindorf.arcane_conjouring;
 
 import at.kaindorf.arcane_conjouring.client.ClientEventHandler;
-import at.kaindorf.arcane_conjouring.init.BlockEntityInit;
-import at.kaindorf.arcane_conjouring.init.BlockInit;
-import at.kaindorf.arcane_conjouring.init.ItemInit;
-import at.kaindorf.arcane_conjouring.init.MenuTypeInit;
+import at.kaindorf.arcane_conjouring.client.render.MagicBoltRenderer;
+import at.kaindorf.arcane_conjouring.init.*;
 import at.kaindorf.arcane_conjouring.network.ModMessages;
+import at.kaindorf.arcane_conjouring.screen.SpellTableMenu;
+import at.kaindorf.arcane_conjouring.screen.SpellTableScreen;
 import at.kaindorf.arcane_conjouring.screen.WandWorkbenchScreen;
 import at.kaindorf.arcane_conjouring.world.feature.ModConfiguratedFeatures;
 import at.kaindorf.arcane_conjouring.world.feature.ModPlacedFeatures;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -52,9 +53,10 @@ public class Arcane_conjouring {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ClientEventHandler.register();
 
+        SpellCastInit.register(modEventBus);
         BlockInit.register(modEventBus);
         ItemInit.register(modEventBus);
-
+        EntityInit.register(modEventBus);
         BlockEntityInit.register(modEventBus);
         MenuTypeInit.register(modEventBus);
 
@@ -94,6 +96,9 @@ public class Arcane_conjouring {
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
 
             MenuScreens.register(MenuTypeInit.WAND_WORKBENCH_MENU.get(), WandWorkbenchScreen::new);
+            MenuScreens.register(MenuTypeInit.SPELL_TABLE_MENU.get(), SpellTableScreen::new);
+
+            EntityRenderers.register(EntityInit.MAGIC_BOLT.get(), MagicBoltRenderer::new);
         }
     }
 }

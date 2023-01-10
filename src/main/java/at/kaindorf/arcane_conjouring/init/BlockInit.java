@@ -1,6 +1,7 @@
 package at.kaindorf.arcane_conjouring.init;
 
 import at.kaindorf.arcane_conjouring.Arcane_conjouring;
+import at.kaindorf.arcane_conjouring.block.SpellTableBlock;
 import at.kaindorf.arcane_conjouring.block.ModFlammableRotatedPillarBlock;
 import at.kaindorf.arcane_conjouring.block.WandWorkbenchBlock;
 import at.kaindorf.arcane_conjouring.world.feature.tree.VeilwoodTreeGrower;
@@ -85,8 +86,8 @@ public class BlockInit {
 
 
     public static final RegistryObject<Block> SPELL_TABLE = registerBlock("spell_table",
-            () -> new Block(BlockBehaviour.Properties.of(Material.WOOD)
-                    .noOcclusion().strength(0.2f).sound(SoundType.WOOD)), ModCreativeModeTab.ARCANE_CONJOURING_TAB);
+            () -> new SpellTableBlock(BlockBehaviour.Properties.of(Material.WOOD)
+                    .noOcclusion().strength(0.2f).sound(SoundType.WOOD)), CreativeModeTab.TAB_MISC);
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);

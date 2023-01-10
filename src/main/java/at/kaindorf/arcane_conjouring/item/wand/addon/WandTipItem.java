@@ -1,14 +1,10 @@
 package at.kaindorf.arcane_conjouring.item.wand.addon;
 
-import at.kaindorf.arcane_conjouring.client.render.ModBlockEntityWithoutLevelRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-
-import java.util.function.Consumer;
-import java.util.logging.Level;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class WandTipItem extends Item implements IWandAddon {
 
@@ -16,8 +12,12 @@ public class WandTipItem extends Item implements IWandAddon {
         super(properties);
     }
 
-    public void cast(Player player, Level level, SpellRingItem spellRing) {
-        spellRing.apply(player);
+    private CastingTarget target = new CastingTarget();
+
+    public void cast(ItemStack ring, Level level, LivingEntity entity) {
+
+
+        SpellRingItem.apply(ring, target);
     }
 
     @Override

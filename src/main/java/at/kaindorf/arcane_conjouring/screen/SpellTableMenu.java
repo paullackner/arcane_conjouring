@@ -1,81 +1,85 @@
 package at.kaindorf.arcane_conjouring.screen;
 
-import at.kaindorf.arcane_conjouring.block.entity.SpellTableBlockEntity;
 import at.kaindorf.arcane_conjouring.init.BlockInit;
+import at.kaindorf.arcane_conjouring.init.MenuTypeInit;
+import at.kaindorf.arcane_conjouring.init.SpellCastInit;
+import at.kaindorf.arcane_conjouring.item.wand.addon.SpellRingItem;
+import at.kaindorf.arcane_conjouring.item.wand.addon.spell.SpellCast;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class SpellTableMenu extends AbstractContainerMenu {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-    public final SpellTableBlockEntity blockEntity;
+public class SpellTableMenu extends ItemCombinerMenu {
     private final Level level;
+    private final Map<ItemStack, List<SpellCast>> ingredients = new HashMap();
 
-    protected SpellTableMenu(@Nullable MenuType<?> menuType, int id, SpellTableBlockEntity blockEntity, Level level) {
-        super(menuType, id);
-        this.blockEntity = blockEntity;
-        this.level = level;
+
+    public SpellTableMenu(int id, Inventory inventory, ContainerLevelAccess containerLevelAccess) {
+        super(MenuTypeInit.SPELL_TABLE_MENU.get(), id, inventory, containerLevelAccess);
+        this.level = inventory.player.level;
+        SpellCastInit.REGISTRY
+                .get().forEach(cast ->
+                        cast.getIngredients().forEach(stack -> {
+                            ingredients.putIfAbsent(stack, new ArrayList<>());
+                            ingredients.get(stack).add(cast);
+                        })
+                );
+    }
+
+    public SpellTableMenu(int id, Inventory inventory, FriendlyByteBuf friendlyByteBuf) {
+        this(id, inventory, ContainerLevelAccess.NULL);
     }
 
     @Override
-    public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockInit.WAND_WORKBENCH.get());
+    protected boolean mayPickup(Player player, boolean p_39799_) {
+        return true;
     }
 
-    // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
-    // must assign a slot number to each of the slots used by the GUI.
-    // For this container, we can see both the tile inventory's slots as well as the player inventory slots and the hotbar.
-    // Each time we add a Slot to the container, it automatically increases the slotIndex, which means
-    //  0 - 8 = hotbar slots (which will map to the InventoryPlayer slot numbers 0 - 8)
-    //  9 - 35 = player inventory slots (which map to the InventoryPlayer slot numbers 9 - 35)
-    //  36 - 44 = TileInventory slots, which map to our TileEntity slot numbers 0 - 8)
-    private static final int HOTBAR_SLOT_COUNT = 9;
-    private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
-    private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
-    private static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
-    private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
-    private static final int VANILLA_FIRST_SLOT_INDEX = 0;
-    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
+    @Override
+    protected void onTake(Player player, ItemStack itemStack) {
+        this.shrinkStackInSlot(0);
+        this.shrinkStackInSlot(1);
+        this.access.execute((p_40263_, p_40264_) -> {
+            p_40263_.levelEvent(1044, p_40264_, 0);
+        });
+    }
 
-    // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
+    private void shrinkStackInSlot(int slot) {
+        ItemStack itemstack = this.inputSlots.getItem(slot);
+        itemstack.shrink(1);
+        this.inputSlots.setItem(slot, itemstack);
+    }
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
-        Slot sourceSlot = slots.get(index);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
-        ItemStack sourceStack = sourceSlot.getItem();
-        ItemStack copyOfSourceStack = sourceStack.copy();
+    protected boolean isValidBlock(BlockState blockState) {
+        return blockState.is(BlockInit.SPELL_TABLE.get());
+    }
 
-        // Check if the slot clicked is one of the vanilla container slots
-        if (index < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            // This is a vanilla container slot so merge the stack into the tile inventory
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;  // EMPTY_ITEM
-            }
-        } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
-            // This is a TE slot so merge the stack into the players inventory
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
-                sourceSlot.set(sourceStack);
-                return ItemStack.EMPTY;
-            }
-        } else {
-            System.out.println("Invalid slotIndex:" + index);
-            return ItemStack.EMPTY;
-        }
-        // If stack size == 0 (the entire stack was moved) set slot contents to null
-        if (sourceStack.getCount() == 0) {
-            sourceSlot.set(ItemStack.EMPTY);
-        } else {
-            sourceSlot.setChanged();
-        }
-        sourceSlot.onTake(playerIn, sourceStack);
-        return copyOfSourceStack;
+    @Override
+    public void createResult() {
+        ItemStack ring = this.inputSlots.getItem(0);
+        if (!(ring.getItem() instanceof SpellRingItem)) return;
+        ItemStack input = this.inputSlots.getItem(1);
+        ingredients.entrySet()
+                .stream()
+                //FIX: EFFECT IS ALWAYS SLOWNESS -> all potions are the same item
+                .filter(entry -> entry.getKey().sameItem(input))
+                .map(entry -> entry.getValue())
+                .findAny()
+                .ifPresent(casts -> {
+                    ItemStack result = ring.copy();
+                    casts.forEach(cast -> SpellRingItem.addCast(result, cast));
+                    this.resultSlots.setItem(0, result);
+                });
     }
 }
