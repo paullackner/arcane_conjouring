@@ -6,10 +6,16 @@ import at.kaindorf.arcane_conjouring.init.SpellCastInit;
 import at.kaindorf.arcane_conjouring.item.wand.addon.SpellRingItem;
 import at.kaindorf.arcane_conjouring.item.wand.addon.spell.SpellCast;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -67,17 +73,24 @@ public class SpellTableMenu extends ItemCombinerMenu {
 
     @Override
     public void createResult() {
+        if (inputSlots.getItem(0).isEmpty() || inputSlots.getItem(1).isEmpty()) {
+            this.resultSlots.setItem(0, ItemStack.EMPTY);
+            return;
+        }
         ItemStack ring = this.inputSlots.getItem(0);
         if (!(ring.getItem() instanceof SpellRingItem)) return;
         ItemStack input = this.inputSlots.getItem(1);
+        ItemStack result = ring.copy();
         ingredients.entrySet()
                 .stream()
                 //FIX: EFFECT IS ALWAYS SLOWNESS -> all potions are the same item
-                .filter(entry -> entry.getKey().sameItem(input))
+                .filter(entry -> {
+                    ItemStack ingredient = entry.getKey();
+                    return ingredient.sameItem(input) && (!ingredient.is(Items.POTION) ||
+                            PotionUtils.getPotion(input).equals(PotionUtils.getPotion(ingredient)));
+                })
                 .map(entry -> entry.getValue())
-                .findAny()
-                .ifPresent(casts -> {
-                    ItemStack result = ring.copy();
+                .forEach(casts -> {
                     casts.forEach(cast -> SpellRingItem.addCast(result, cast));
                     this.resultSlots.setItem(0, result);
                 });
