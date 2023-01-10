@@ -7,6 +7,8 @@ import at.kaindorf.arcane_conjouring.init.ItemInit;
 import at.kaindorf.arcane_conjouring.init.MenuTypeInit;
 import at.kaindorf.arcane_conjouring.network.ModMessages;
 import at.kaindorf.arcane_conjouring.screen.WandWorkbenchScreen;
+import at.kaindorf.arcane_conjouring.world.feature.ModConfiguratedFeatures;
+import at.kaindorf.arcane_conjouring.world.feature.ModPlacedFeatures;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -56,18 +58,10 @@ public class Arcane_conjouring {
         BlockEntityInit.register(modEventBus);
         MenuTypeInit.register(modEventBus);
 
-        modEventBus.addListener(this::commonSetup);
-
-        BlockInit.BLOCKS.register(modEventBus);
-        ItemInit.ITEMS.register(modEventBus);
-
         ModConfiguratedFeatures.register(modEventBus);
         ModPlacedFeatures.register(modEventBus);
 
-        // Register the Deferred Register to the mod event bus so blocks get registered
-        BLOCKS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so items get registered
-        ITEMS.register(modEventBus);
+        modEventBus.addListener(this::commonSetup);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

@@ -1,8 +1,11 @@
 package at.kaindorf.arcane_conjouring.init;
 
 import at.kaindorf.arcane_conjouring.Arcane_conjouring;
+import at.kaindorf.arcane_conjouring.block.ModFlammableRotatedPillarBlock;
 import at.kaindorf.arcane_conjouring.block.WandWorkbenchBlock;
 import at.kaindorf.arcane_conjouring.world.feature.tree.VeilwoodTreeGrower;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -24,7 +27,7 @@ public class BlockInit {
             DeferredRegister.create(ForgeRegistries.BLOCKS, Arcane_conjouring.MODID);
 
     public static final RegistryObject<Block> WAND_WORKBENCH = registerBlock("wand_workbench",
-            () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3f).sound(SoundType.WOOD)),
+            () -> new WandWorkbenchBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3f).sound(SoundType.WOOD)),
             ModCreativeModeTab.ARCANE_CONJOURING_TAB);
 
     public static final RegistryObject<Block> VEILWOOD_LOG = registerBlock("veilwood_log",
@@ -83,7 +86,7 @@ public class BlockInit {
 
     public static final RegistryObject<Block> SPELL_TABLE = registerBlock("spell_table",
             () -> new Block(BlockBehaviour.Properties.of(Material.WOOD)
-                    .noOcclusion().strength(0.2f).sound(SoundType.WOOD)), CreativeModeTab.TAB_MISC);
+                    .noOcclusion().strength(0.2f).sound(SoundType.WOOD)), ModCreativeModeTab.ARCANE_CONJOURING_TAB);
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);
