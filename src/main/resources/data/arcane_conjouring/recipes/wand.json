@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " x ",
+    " x ",
+    " x "
+  ],
+  "key": {
+    "x": {
+      "item": "arcane_conjouring:stripped_veilwood_log"
+    }
+  },
+  "result": {
+    "item": "arcane_conjouring:wand",
+    "count": 3
+  }
+}

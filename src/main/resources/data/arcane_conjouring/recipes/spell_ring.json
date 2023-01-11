@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "yxy",
+    "x x",
+    "yxy"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:iron_ingot"
+    },
+    "y": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "result": {
+    "item": "arcane_conjouring:spell_ring",
+    "count": 1
+  }
+}

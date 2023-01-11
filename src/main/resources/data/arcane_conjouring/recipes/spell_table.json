@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "yyy",
+    "x x",
+    "xzx"
+  ],
+  "key": {
+    "x": {
+      "item": "arcane_conjouring:veilwood_log"
+    },
+    "y": {
+      "item": "minecraft:polished_blackstone_brick_slab"
+    },
+    "z": {
+      "item": "arcane_conjouring:veilwood_planks"
+    }
+  },
+  "result": {
+    "item": "arcane_conjouring:spell_table",
+    "count": 1
+  }
+}

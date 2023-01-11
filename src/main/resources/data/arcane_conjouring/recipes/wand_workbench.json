@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xzx",
+    "z z",
+    "y y"
+  ],
+  "key": {
+    "x": {
+      "item": "arcane_conjouring:veilwood_log"
+    },
+    "y": {
+      "item": "minecraft:polished_blackstone_brick_slab"
+    },
+    "z": {
+      "item": "arcane_conjouring:veilwood_planks"
+    }
+  },
+  "result": {
+    "item": "arcane_conjouring:wand_workbench",
+    "count": 1
+  }
+}

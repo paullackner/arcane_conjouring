@@ -86,7 +86,7 @@ public class BlockInit {
 
     public static final RegistryObject<Block> SPELL_TABLE = registerBlock("spell_table",
             () -> new SpellTableBlock(BlockBehaviour.Properties.of(Material.WOOD)
-                    .noOcclusion().strength(0.2f).sound(SoundType.WOOD)), CreativeModeTab.TAB_MISC);
+                    .noOcclusion().strength(0.2f).sound(SoundType.WOOD)), ModCreativeModeTab.ARCANE_CONJOURING_TAB);
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> registryObject = BLOCKS.register(name, block);

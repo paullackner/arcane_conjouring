@@ -17,13 +17,13 @@ public class ItemInit {
             DeferredRegister.create(ForgeRegistries.ITEMS, Arcane_conjouring.MODID);
 
     public static final RegistryObject<Item> WAND = ITEMS.register("wand",
-            () -> new WandItem(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1)) );
+            () -> new WandItem(new Item.Properties().tab(ModCreativeModeTab.ARCANE_CONJOURING_SPELLS).stacksTo(1)) );
 
     public static final RegistryObject<Item> SPELL_RING = ITEMS.register("spell_ring",
-            () -> new SpellRingItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1)) );
+            () -> new SpellRingItem(new Item.Properties().tab(ModCreativeModeTab.ARCANE_CONJOURING_SPELLS).stacksTo(1)) );
 
     public static final RegistryObject<Item> WAND_TIP = ITEMS.register("wand_tip",
-            () -> new ProjectileWandTipItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1)) );
+            () -> new ProjectileWandTipItem(new Item.Properties().tab(ModCreativeModeTab.ARCANE_CONJOURING_SPELLS).stacksTo(1)) );
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

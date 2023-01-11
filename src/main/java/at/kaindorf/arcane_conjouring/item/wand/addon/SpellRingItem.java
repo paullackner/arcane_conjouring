@@ -2,6 +2,7 @@ package at.kaindorf.arcane_conjouring.item.wand.addon;
 
 
 import at.kaindorf.arcane_conjouring.init.ItemInit;
+import at.kaindorf.arcane_conjouring.init.ModCreativeModeTab;
 import at.kaindorf.arcane_conjouring.init.SpellCastInit;
 import at.kaindorf.arcane_conjouring.item.wand.addon.spell.*;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -70,11 +71,12 @@ public class SpellRingItem extends Item implements IWandAddon{
 
     @Override
     public void fillItemCategory(CreativeModeTab creativeModeTab, NonNullList<ItemStack> itemStacks) {
-        if (creativeModeTab == CreativeModeTab.TAB_SEARCH) {
+        if (creativeModeTab == ModCreativeModeTab.ARCANE_CONJOURING_SPELLS) {
             for (SpellCast spellCast : SpellCastInit.REGISTRY.get()) {
                 itemStacks.add(createForCast(spellCast));
 
             }
+            itemStacks.add(new ItemStack(ItemInit.SPELL_RING.get()));
         }
     }
 
