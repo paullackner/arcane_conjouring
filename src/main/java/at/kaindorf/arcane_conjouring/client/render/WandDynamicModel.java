@@ -4,6 +4,7 @@ import com.google.common.collect.*;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockModel;
@@ -18,6 +19,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.IDynamicBakedModel;
+import net.minecraftforge.client.model.SimpleModelState;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
@@ -54,6 +56,10 @@ public class WandDynamicModel implements IUnbakedGeometry<WandDynamicModel> {
         if (deprecatedLoader)
             LOGGER.warn("Model \"" + modelLocation + "\" is using the deprecated loader \"forge:separate-perspective\" instead of \"forge:separate_transforms\". This loader will be removed in 1.20.");
         LOGGER.debug("bake wand model");
+        var rootTransform = context.getRootTransform();
+        if (!rootTransform.isIdentity())
+            modelState = new SimpleModelState(modelState.getRotation().compose(rootTransform), modelState.isUvLocked());
+
         return new WandDynamicModel.Baked(
                 context.useAmbientOcclusion(), context.isGui3d(), context.useBlockLight(),
                 spriteGetter.apply(context.getMaterial("particle")), overrides,
@@ -138,7 +144,7 @@ public class WandDynamicModel implements IUnbakedGeometry<WandDynamicModel> {
         @Override
         public ItemTransforms getTransforms()
         {
-            return ItemTransforms.NO_TRANSFORMS;
+            return transforms;
         }
 
         @Override
@@ -153,9 +159,16 @@ public class WandDynamicModel implements IUnbakedGeometry<WandDynamicModel> {
 
         public WandDynamicModel read(JsonObject jsonObject, JsonDeserializationContext deserializationContext)
         {
-            BlockModel baseModel = deserializationContext.deserialize(GsonHelper.getAsJsonObject(jsonObject, "base"), BlockModel.class);
+            JsonObject base = GsonHelper.getAsJsonObject(jsonObject, "base");
+
+            BlockModel baseModel = deserializationContext.deserialize(base, BlockModel.class);
+
+            JsonObject transforms = GsonHelper.getAsJsonObject(base, "display");
+
 
             JsonObject perspectiveData = GsonHelper.getAsJsonObject(jsonObject, "perspectives");
+
+
 
             Map<ItemTransforms.TransformType, BlockModel> perspectives = new HashMap<>();
             for (ItemTransforms.TransformType transform : ItemTransforms.TransformType.values())
